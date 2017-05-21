@@ -39,6 +39,8 @@ class WannaCry extends JFrame {
 	private static String TEXT = "我的电脑出了什么问题？\n您的一些重要文件被我加密保存了。";
 	private static String PAY = "Send $300 worth of bitcoin to this address:";
 	private static String ADDRESS = "13AM4VM2dhxYgXeQepoHkHSQuy6NgaEb94";
+	private static String TOPIC_COLOR = "#8B2323";
+//	private static String TOPIC_COLOR = "#228B22";
 	private static String PATH_ICON = "/resource/icon.png";
 	private static String PATH_LOCK = "/resource/lock.png";
 	private static String PATH_COLOR = "/resource/color.png";
@@ -79,7 +81,7 @@ class WannaCry extends JFrame {
 	private void initView(JPanel jPanel) {
 		jPanel.setLayout(null);
 		jPanel.setSize(WIDTH, HEIGHT);
-		jPanel.setBackground(Color.decode("#8B2323"));
+		jPanel.setBackground(Color.decode(TOPIC_COLOR));
 
 		/** LOCK **/
 		jLabel_lock = new JLabel();
@@ -93,7 +95,7 @@ class WannaCry extends JFrame {
 		jPanel_raise = new JPanel();
 		jPanel_raise.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.lightGray));
 		jPanel_raise.setBounds(10, 162, 270, 170);
-		jPanel_raise.setBackground(Color.decode("#8B2323"));
+		jPanel_raise.setBackground(Color.decode(TOPIC_COLOR));
 		jPanel_raise.setLayout(null);
 		jPanel.add(jPanel_raise);
 		imageIcon_color = new ImageIcon(getClass().getResource(PATH_COLOR));
@@ -132,7 +134,7 @@ class WannaCry extends JFrame {
 		jPanel_lost = new JPanel();
 		jPanel_lost.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.lightGray));
 		jPanel_lost.setBounds(10, 345, 270, 170);
-		jPanel_lost.setBackground(Color.decode("#8B2323"));
+		jPanel_lost.setBackground(Color.decode(TOPIC_COLOR));
 		jPanel_lost.setLayout(null);
 		jPanel.add(jPanel_lost);
 
@@ -196,7 +198,7 @@ class WannaCry extends JFrame {
 		jComboBox = new JComboBox<>(LANGUAGE);
 		jComboBox.setFont(new Font(Font.SANS_SERIF, 0, 15));
 		jComboBox.setBounds(850, 15, 135, 25);
-		jComboBox.setBackground(Color.decode("#8B2323"));
+		jComboBox.setBackground(Color.decode(TOPIC_COLOR));
 		jComboBox.setForeground(Color.white);
 		jPanel.add(jComboBox);
 
@@ -220,7 +222,7 @@ class WannaCry extends JFrame {
 		jPanel_pay = new JPanel();
 		jPanel_pay.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.lightGray));
 		jPanel_pay.setBounds(290, 525, 700, 90);
-		jPanel_pay.setBackground(Color.decode("#8B2323"));
+		jPanel_pay.setBackground(Color.decode(TOPIC_COLOR));
 		jPanel_pay.setLayout(null);
 		jPanel.add(jPanel_pay);
 
@@ -240,7 +242,7 @@ class WannaCry extends JFrame {
 		jPanel_address = new JPanel();
 		jPanel_address.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.lightGray));
 		jPanel_address.setBounds(175, 45, 475, 35);
-		jPanel_address.setBackground(Color.decode("#8B2323"));
+		jPanel_address.setBackground(Color.decode(TOPIC_COLOR));
 		jPanel_address.setLayout(null);
 		jPanel_pay.add(jPanel_address);
 
@@ -249,7 +251,7 @@ class WannaCry extends JFrame {
 		jLabel_address.setFont(new Font(Font.SANS_SERIF, 0, 18));
 		jLabel_address.setBounds(2, 2, 471, 31);
 		jLabel_address.setForeground(Color.white);
-		jLabel_address.setBackground(Color.decode("#8B2323"));
+		jLabel_address.setBackground(Color.decode(TOPIC_COLOR));
 		jPanel_address.add(jLabel_address);
 
 		jButton_copy = new JButton("Copy");
