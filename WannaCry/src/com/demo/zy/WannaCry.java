@@ -36,11 +36,15 @@ class WannaCry extends JFrame {
 	private static int WIDTH = 1000, HEIGHT = 710;
 	private static String NAME = "Wana  DecryptOr  2.0";
 	private static String TITLE = "Ooops, your files have been encrypted!";
-	private static String TEXT = "我的电脑出了什么问题？\n您的一些重要文件被我加密保存了。";
+	private static String TEXT = "我的电脑出了什么问题？\n" + "您的一些重要文件被我加密保存了。\n"
+			+ "照片、图片、文档、压缩包、音频、视频文件、exe文件等，几乎所有类型的文件都被加密了，因此不能正常打开。\n"
+			+ "这和一般文件损坏有本质上的区别。您大可在网上找找恢复文件的方法，我敢保证，没有我们的解密服务，就算老天爷来了也不能恢复这些文档。\n\n"
+			+ "有没有恢复这些文档的方法？\n"
+			+ "我写不下去了，打字好他妈累。。。\n";
 	private static String PAY = "Send $300 worth of bitcoin to this address:";
 	private static String ADDRESS = "13AM4VM2dhxYgXeQepoHkHSQuy6NgaEb94";
-	private static String TOPIC_COLOR = "#8B2323";//红
-//	private static String TOPIC_COLOR = "#228B22";//绿
+	private static String TOPIC_COLOR = "#8B2323";// 红
+	// private static String TOPIC_COLOR = "#228B22";//绿
 	private static String PATH_ICON = "/resource/icon.png";
 	private static String PATH_LOCK = "/resource/lock.png";
 	private static String PATH_COLOR = "/resource/color.png";
@@ -54,13 +58,13 @@ class WannaCry extends JFrame {
 	private JFrame jFrame;
 	private JLabel jLabel_raise_text1, jLabel_raise_text2, jLabel_raise_text3, jLabel_raise_text4, jLabel_raise_color;
 	private JLabel jLabel_lost_text1, jLabel_lost_text2, jLabel_lost_text3, jLabel_lost_text4, jLabel_lost_color;
-	private JLabel jLabel_lock, jLabel_contact, jLabel_title, jLabel_bitcoin, jLabel_pay_text,jLabel_address;
+	private JLabel jLabel_lock, jLabel_contact, jLabel_title, jLabel_bitcoin, jLabel_pay_text, jLabel_address;
 	private JPanel jPanel_raise, jPanel_lost, jPanel_pay, jPanel_address;
 	private LinkLabel linkLabel_1, linkLabel_2;
 	private JComboBox<String> jComboBox;
 	private JTextArea jTextArea_text;
 	private JScrollPane scrollPane;
-	private JButton jButton_copy,jButton_check,jButton_decrypt;
+	private JButton jButton_copy, jButton_check, jButton_decrypt;
 
 	private JFrame initJFrame() {
 		imageIcon = new ImageIcon(PATH_ICON);
@@ -260,14 +264,14 @@ class WannaCry extends JFrame {
 		jButton_copy.setMargin(new Insets(1, 1, 1, 1));
 		jButton_copy.setBackground(Color.decode("#EEE9E9"));
 		jPanel_pay.add(jButton_copy);
-		
+
 		/** BUTTON **/
 		jButton_check = new JButton("Check Payment");
 		jButton_check.setFont(new Font(Font.DIALOG, 1, 18));
 		jButton_check.setBounds(290, 630, 330, 35);
 		jButton_check.setBackground(Color.decode("#EEE9E9"));
 		jPanel.add(jButton_check);
-		
+
 		jButton_decrypt = new JButton("Decrypt");
 		jButton_decrypt.setFont(new Font(Font.DIALOG, 1, 18));
 		jButton_decrypt.setBounds(660, 630, 330, 35);
