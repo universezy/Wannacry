@@ -9,8 +9,19 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -41,27 +52,18 @@ class WannaCry extends JFrame {
 	private int RANSOM = 1;
 	private static String NAME = "Wana  DecryptOr  2.1 plus";
 	private static String TITLE = "Ooops, your files have been encrypted!";
-	private static String TEXT = "我的电脑出了什么问题？\n" + "您的一些重要文件被我加密保存了。\n"
-			+ "照片、图片、文档、压缩包、音频、视频文件、exe文件等，几乎所有类型的文件都被加密了，因此不能正常打开。\n"
-			+ "这和一般文件损坏有本质上的区别。您大可在网上找找恢复文件的方法，我不敢保证，但是没有我的解密服务，你恢复这些文档会很麻烦。\n\n" + "有没有恢复这些文档的方法？\n"
-			+ "当然有可恢复的方法。可以通过我的解密服务恢复。我以人格担保，能够提供恢复服务，但不敢保证那足够安全有效。\n" + "但这是收费的，也不能无期限的推迟，尽管这很便宜。\n"
-			+ "请点击<Decrypt>按钮，就可以免费恢复一些文档。请您放心，我是绝不会骗你的。\n" + "但想要恢复全部文档，需要付款点费用。\n"
-			+ "是否随时都可以固定金额付款，就会恢复的吗，当然不是，推迟付款时间越长对你越不利。\n" + "最好3天之内付款费用，过了三天费用就会翻倍。\n" + "还有，一个礼拜之内未付款，就会永远恢复不了。\n"
-			+ "对了，忘了告诉你，对半年以上没钱付款的穷人，会有活动免费恢复，能否轮到你，就要看您的运气怎么样了。\n\n" + "付款方法\n" + "我只接受Q币，不懂Q币是什么，请点击查看详情<About QB>。\n"
-			+ "不会购买Q币，请点击查看购买方法，<How to buy QBS>。\n" + "要注意：付款金额不能低于在窗口上显示的金额。\n"
-			+ "付款后，请点击<Check Payment>按钮，因为Q币的到账，需要一定时间，付款后请耐心等待。\n" + "最好的确认时间为周一到周五，从上午9点到11点。\n"
-			+ "到账成功后，可立刻开始恢复工作。\n\n" + "联系方式\n" + "如果需要我的帮助，请点击<Contact me>，发给我消息吧。\n\n"
-			+ "我强烈建议，为了避免不必要的麻烦，恢复工作结束之前，请不要关闭或者删除该软件，并且暂停杀毒软件，不管由于什么原因，万一该软件被删除了，很可能会导致付款后也不能恢复信息的情况。";
+	private String TEXT = "", ADDRESS, string_raised, string_lost;
 	private String PAY = "Send " + RANSOM + " yuan worth of QB to this QQ number:";
-	private static String ADDRESS = "1148871229";
+	private long START_TIME, RAISED_TIME = 0, LOST_TIME = 0;
+
 	private static String TOPIC_COLOR = "#8B2323";// 红
-	// private static String TOPIC_COLOR = "#228B22";//绿
 	private static String PATH_ICON = "/resource/icon.png";
 	private static String PATH_LOCK = "/resource/lock.png";
 	private static String PATH_COLOR = "/resource/color.png";
 	private static String PATH_QB = "/resource/qb.jpg";
-	private static String LINK1 = "http://baike.baidu.com/link?url=DqTnozzY3b5dBFctNXJXf2qUEANhu-TnWkQgIif94nMAB8BF2MK1aPifxafUomxTsf6x2pI17kv6Gc2UnNHmnMHqC9ke7FLnzW_Nb7kpXGecolCn9lZZ-6p_nvule86g";
-	private static String LINK2 = "https://pay.qq.com/ipay/index.shtml";
+	private static String PATH_PROPERTIES = "/resource/wannacry.properties";
+	private String LINK1 = "";
+	private String LINK2 = "";
 	private static String[] LANGUAGE = { "Chinese (simple)", "English" };
 
 	/** COMPONENT **/
@@ -76,6 +78,50 @@ class WannaCry extends JFrame {
 	private JTextArea jTextArea_text;
 	private JScrollPane jScrollPane;
 	private JButton jButton_copy, jButton_check, jButton_decrypt;
+
+	private void getParams() {
+		try {
+			Properties properties = new Properties();
+			InputStream inputStream = this.getClass().getResourceAsStream(PATH_PROPERTIES);
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+			properties.load(bufferedReader);
+			RANSOM = Integer.valueOf(properties.getProperty("RANSOM"));
+			TEXT = properties.getProperty("CHINESE");
+			ADDRESS = properties.getProperty("ADDRESS");
+			LINK1 = properties.getProperty("LINK1");
+			LINK2 = properties.getProperty("LINK2");
+			String string_start = properties.getProperty("START_TIME");
+			if (string_start == null || string_start.equals("")) {
+				START_TIME = System.currentTimeMillis();
+				string_start = START_TIME + "";
+				properties.setProperty("START_TIME", string_start);
+				FileOutputStream fileOutputStream;
+				fileOutputStream = new FileOutputStream(new File(getClass().getResource(PATH_PROPERTIES).toURI()));
+				properties.store(fileOutputStream, "UPDATE_START_TIME");
+				fileOutputStream.flush();
+				fileOutputStream.close();
+			}
+			long start_time = Long.parseLong(string_start);
+			RAISED_TIME = 3 * 24 * 60 * 60 * 1000 + start_time;
+			LOST_TIME = 7 * 24 * 60 * 60 * 1000 + start_time;
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+			Date date_raised = new Date(RAISED_TIME);
+			Date date_lost = new Date(LOST_TIME);
+			string_raised = simpleDateFormat.format(date_raised);
+			string_lost = simpleDateFormat.format(date_lost);
+			bufferedReader.close();
+			inputStream.close();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	private JFrame initJFrame() {
 		imageIcon = new ImageIcon(getClass().getResource(PATH_ICON));
@@ -93,7 +139,7 @@ class WannaCry extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				super.windowClosing(e);
-				System.out.println("closing");
+
 			}
 		});
 		jFrame.setVisible(true);
@@ -128,22 +174,22 @@ class WannaCry extends JFrame {
 		jLabel_raise_text1.setBounds(35, 5, 200, 30);
 		jPanel_raise.add(jLabel_raise_text1);
 
-		jLabel_raise_text2 = new JLabel("5/24/2017 20:21:15");
+		jLabel_raise_text2 = new JLabel(string_raised);
 		jLabel_raise_text2.setFont(new Font(Font.DIALOG, 1, 17));
 		jLabel_raise_text2.setForeground(Color.white);
-		jLabel_raise_text2.setBounds(60, 35, 150, 30);
+		jLabel_raise_text2.setBounds(55, 35, 170, 30);
 		jPanel_raise.add(jLabel_raise_text2);
 
 		jLabel_raise_text3 = new JLabel("Time Left");
 		jLabel_raise_text3.setFont(new Font(Font.DIALOG, 1, 17));
 		jLabel_raise_text3.setForeground(Color.white);
-		jLabel_raise_text3.setBounds(95, 80, 80, 30);
+		jLabel_raise_text3.setBounds(85, 80, 100, 30);
 		jPanel_raise.add(jLabel_raise_text3);
 
-		jLabel_raise_text4 = new JLabel("02: 23: 59: 22");
-		jLabel_raise_text4.setFont(new Font(Font.SANS_SERIF, 1, 35));
+		jLabel_raise_text4 = new JLabel("02: 23: 59: 59");
+		jLabel_raise_text4.setFont(new Font(Font.MONOSPACED, 1, 35));
 		jLabel_raise_text4.setForeground(Color.white);
-		jLabel_raise_text4.setBounds(15, 105, 240, 60);
+		jLabel_raise_text4.setBounds(5, 105, 240, 60);
 		jPanel_raise.add(jLabel_raise_text4);
 
 		jLabel_raise_color = new JLabel();
@@ -166,22 +212,22 @@ class WannaCry extends JFrame {
 		jLabel_lost_text1.setBounds(35, 5, 200, 30);
 		jPanel_lost.add(jLabel_lost_text1);
 
-		jLabel_lost_text2 = new JLabel("5/28/2017 20:21:15");
+		jLabel_lost_text2 = new JLabel(string_lost);
 		jLabel_lost_text2.setFont(new Font(Font.DIALOG, 1, 17));
 		jLabel_lost_text2.setForeground(Color.white);
-		jLabel_lost_text2.setBounds(60, 35, 150, 30);
+		jLabel_lost_text2.setBounds(55, 35, 170, 30);
 		jPanel_lost.add(jLabel_lost_text2);
 
 		jLabel_lost_text3 = new JLabel("Time Left");
 		jLabel_lost_text3.setFont(new Font(Font.DIALOG, 1, 17));
 		jLabel_lost_text3.setForeground(Color.white);
-		jLabel_lost_text3.setBounds(95, 80, 80, 30);
+		jLabel_lost_text3.setBounds(85, 80, 100, 30);
 		jPanel_lost.add(jLabel_lost_text3);
 
-		jLabel_lost_text4 = new JLabel("06: 23: 59: 22");
-		jLabel_lost_text4.setFont(new Font(Font.SANS_SERIF, 1, 35));
+		jLabel_lost_text4 = new JLabel("06: 23: 59: 59");
+		jLabel_lost_text4.setFont(new Font(Font.MONOSPACED, 1, 35));
 		jLabel_lost_text4.setForeground(Color.white);
-		jLabel_lost_text4.setBounds(15, 105, 240, 60);
+		jLabel_lost_text4.setBounds(5, 105, 240, 60);
 		jPanel_lost.add(jLabel_lost_text4);
 
 		jLabel_lost_color = new JLabel();
@@ -227,7 +273,7 @@ class WannaCry extends JFrame {
 		/** TEXT **/
 		jTextArea_text = new JTextArea();
 		jTextArea_text.setText(TEXT);
-		jTextArea_text.setFont(new Font(Font.SERIF, 1, 15));
+		jTextArea_text.setFont(new Font(Font.SERIF, 1, 18));
 		jTextArea_text.setBackground(Color.white);
 		jTextArea_text.setEditable(false);
 		jTextArea_text.setLineWrap(true);
@@ -329,10 +375,23 @@ class WannaCry extends JFrame {
 	}
 
 	private void setAction() {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-		Date date = new Date(System.currentTimeMillis());
-		String string = simpleDateFormat.format(date);
-
+		long currentTime = System.currentTimeMillis() + 32 * 60 * 60 * 1000;
+		long rest_raised = RAISED_TIME - currentTime;
+		long rest_lost = LOST_TIME - currentTime;
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd:HH:mm:ss");
+		Date date1 = new Date(rest_raised);
+		Date date2 = new Date(rest_lost);
+		jLabel_raise_text4.setText(simpleDateFormat.format(date1));
+		jLabel_lost_text4.setText(simpleDateFormat.format(date2));
+		Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				setAction();
+			}
+		};
+		timer.schedule(task, 1000);
 	}
 
 	public static void main(String[] args) {
@@ -345,6 +404,7 @@ class WannaCry extends JFrame {
 				UIManager.put("InternalFrame.titleFont", new Font(Font.SERIF, 1, 15));
 				JPanel jPanel = new JPanel();
 				JFrame.setDefaultLookAndFeelDecorated(true);
+				wannaCry.getParams();
 				wannaCry.initJFrame().add(jPanel);
 				wannaCry.initView(jPanel);
 				wannaCry.setListener();
