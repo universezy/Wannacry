@@ -132,7 +132,7 @@ class WannaCry extends JFrame {
 		// jFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		jFrame.setResizable(false);
 		jFrame.setUndecorated(true);
-		jFrame.getRootPane().setWindowDecorationStyle(JRootPane.INFORMATION_DIALOG);
+		jFrame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 		jFrame.getRootPane().setBackground(Color.getColor("#0000CD"));
 		jFrame.setLocationRelativeTo(null);
 		jFrame.addWindowListener(new WindowAdapter() {
@@ -396,20 +396,17 @@ class WannaCry extends JFrame {
 
 	public static void main(String[] args) {
 		WannaCry wannaCry = new WannaCry();
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				UIManager.put("InternalFrame.activeTitleBackground", new ColorUIResource(Color.BLUE));
-				UIManager.put("InternalFrame.activeTitleForeground", new ColorUIResource(Color.RED));
-				UIManager.put("InternalFrame.titleFont", new Font(Font.SERIF, 1, 15));
-				JPanel jPanel = new JPanel();
-				JFrame.setDefaultLookAndFeelDecorated(true);
-				wannaCry.getParams();
-				wannaCry.initJFrame().add(jPanel);
-				wannaCry.initView(jPanel);
-				wannaCry.setListener();
-				wannaCry.setAction();
-			}
+		SwingUtilities.invokeLater(()->{
+			UIManager.put("InternalFrame.activeTitleBackground", new ColorUIResource(Color.BLUE));
+			UIManager.put("InternalFrame.activeTitleForeground", new ColorUIResource(Color.RED));
+			UIManager.put("InternalFrame.titleFont", new Font(Font.SERIF, 1, 15));
+			JPanel jPanel = new JPanel();
+			JFrame.setDefaultLookAndFeelDecorated(true);
+			wannaCry.getParams();
+			wannaCry.initJFrame().add(jPanel);
+			wannaCry.initView(jPanel);
+			wannaCry.setListener();
+			wannaCry.setAction();
 		});
 	}
 }

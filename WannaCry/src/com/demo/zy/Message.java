@@ -37,21 +37,18 @@ public class Message extends JFrame {
 	private ImageIcon imageIcon;
 	private JTextArea jTextArea;
 	private JScrollPane jScrollPane;
-	private JButton jButton_send,jButton_cancel;
+	private JButton jButton_send, jButton_cancel;
 
 	private Message() {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				UIManager.put("InternalFrame.activeTitleBackground", new ColorUIResource(Color.BLUE));
-				UIManager.put("InternalFrame.activeTitleForeground", new ColorUIResource(Color.RED));
-				UIManager.put("InternalFrame.titleFont", new Font(Font.SERIF, 1, 15));
-				JPanel jPanel = new JPanel();
-				JFrame.setDefaultLookAndFeelDecorated(true);
-				initJFrame().add(jPanel);
-				initView(jPanel);
-				setListener();
-			}
+		SwingUtilities.invokeLater(() -> {
+			UIManager.put("InternalFrame.activeTitleBackground", new ColorUIResource(Color.BLUE));
+			UIManager.put("InternalFrame.activeTitleForeground", new ColorUIResource(Color.RED));
+			UIManager.put("InternalFrame.titleFont", new Font(Font.SERIF, 1, 15));
+			JPanel jPanel = new JPanel();
+			JFrame.setDefaultLookAndFeelDecorated(true);
+			initJFrame().add(jPanel);
+			initView(jPanel);
+			setListener();
 		});
 	}
 
@@ -100,27 +97,26 @@ public class Message extends JFrame {
 		jScrollPane.setLayout(new ScrollPaneLayout());
 		jScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		jPanel.add(jScrollPane);
-		
+
 		jButton_send = new JButton("Send");
 		jButton_send.setFont(new Font(Font.SERIF, 1, 15));
 		jButton_send.setBounds(230, 210, 95, 30);
 		jPanel.add(jButton_send);
-		
+
 		jButton_cancel = new JButton("Cancel");
 		jButton_cancel.setFont(new Font(Font.SERIF, 1, 15));
 		jButton_cancel.setBounds(345, 210, 95, 30);
 		jPanel.add(jButton_cancel);
 	}
-	
-	private void setListener(){
+
+	private void setListener() {
 		jButton_send.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
 
 			}
 		});
-		
+
 		jButton_cancel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
