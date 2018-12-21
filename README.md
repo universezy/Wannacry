@@ -17,4 +17,4 @@ On the other hand, I learned some points about packing jar file.
 
 ***Main interface, doesn't it look like a real Wannacry?***
 
-![](https://github.com/frogfans/Wannacry/blob/master/image/wannacry.jpg)
+![](image/wannacry.jpg)
